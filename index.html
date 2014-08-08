@@ -9,48 +9,54 @@
 	<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 	<script src="schulen.js"></script>
 	<script src="leaflet.markercluster-src.js"></script>
-
 </head>
 
 <body>
+	<!-- Div-Box zum Anzwigen der Karte -->
 	<div id="map" style="width: 800px; height: 600px"></div>
-
+	
+	<!-- Beginn Skript -->
 	<script>
+
+		// Karte initialisieren; Ansicht auf Wien gesetzt
 		var map = L.map('map').setView([48.209206, 16.372778], 11);
 
+		// Tile Layer einfügen
 		L.tileLayer( 'http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(map);
 		
-
+		// Benutzerdefiniertes Icon
 		var stiftIcon = L.icon({
-	        iconUrl: 'stift.png',
-	        iconSize: [54, 82],
-	        iconAnchor: [1, 82],
-	        popupAnchor: [30, -70]
+	        iconUrl: 'stift.png', // URL des Icon-Bildes
+	        iconSize: [54, 82], // Größe des Icon-Bildes
+	        iconAnchor: [1, 82], // Ankerpunkt des Icon-Bildes
+	        popupAnchor: [30, -70] // Ankerpunkt des Popups
   		});
 
+		// MarkerClusterGroup erstellen
 		var markers = L.markerClusterGroup();
 
+		// GeoJSON Objekte zur Karte hinzufügen mithilfe eines GeoJSON layers
 		var points = L.geoJson(schulen, {
 
+			// Custom Icon hinzufügen
 			pointToLayer: function (feature, latlng) {
 				return L.marker(latlng, {icon: stiftIcon});
 			},
 
+			// Popup hinzufügen
 			onEachFeature: function (feature, layer) {
 			layer.bindPopup(feature.properties.NAME);
 			}
 		});
 
-		
-
-		
+		// Marker zur MarkerClusterGroup hinzufügen		
 		markers.addLayer(points);
-		map.addLayer(markers);      // add it to the map
 
-		map.fitBounds(markers.getBounds());
-	</script>
+		// Zur Karte hinzufügen
+		map.addLayer(markers);
 
+	</script> <!-- Ende Skript -->
 </body>
 </html>
