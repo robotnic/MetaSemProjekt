@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Schulen in Wien</title>
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />	 
+	<link rel="stylesheet" href="MarkerCluster.css" />
+	<link rel="stylesheet" href="MarkerCluster.Default.css" />
+	<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+	<script src="schulen.js"></script>
+	<script src="leaflet.markercluster-src.js"></script>
+
+</head>
+
+<body>
+	<div id="map" style="width: 800px; height: 600px"></div>
+
+	<script>
+		var map = L.map('map').setView([48.209206, 16.372778], 11);
+
+		L.tileLayer( 'http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+		}).addTo(map);
+		
+
+		var stiftIcon = L.icon({
+	        iconUrl: 'stift.png',
+	        iconSize: [54, 82],
+	        iconAnchor: [1, 82],
+	        popupAnchor: [30, -70]
+  		});
+
+		var markers = L.markerClusterGroup();
+
+		var points = L.geoJson(schulen, {
+
+			pointToLayer: function (feature, latlng) {
+				return L.marker(latlng, {icon: stiftIcon});
+			},
+
+			onEachFeature: function (feature, layer) {
+			layer.bindPopup(feature.properties.NAME);
+			}
+		});
+
+		
+
+		
+		markers.addLayer(points);
+		map.addLayer(markers);      // add it to the map
+
+		map.fitBounds(markers.getBounds());
+	</script>
+
+</body>
+</html>
