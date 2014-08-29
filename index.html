@@ -3,20 +3,25 @@
 <head>
 	<title>Schulen in Wien</title>
 	<meta charset="utf-8" />
-	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.css" />
 	<link rel="stylesheet" href="MarkerCluster.css" />
 	<link rel="stylesheet" href="MarkerCluster.Default.css" />
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
- 	<h1>Schulen in Wien</h1>
- 	<p>Auf der folgenden Karte sind alle Schulen Wiens eingezeichnet.</p>
+	<div id="header">
+		<h1 class="side">Schulen in Wien</h1>
+ 		<h5 class="side">Ein Projekt von Clariza Lapitan & Yvonne Zhou.</h5>
+ 	</div>
+ 	<p id="txt">Auf der folgenden Karte sind alle Schulen Wiens eingezeichnet.</p>
 
- 	<!-- Div-Box zum Anzwigen der Karte -->
-	<div id="map" style="width: 500px; height: 500px; margin: auto; margin-top: 50px"></div>
-	<p>Ein Projekt von Clariza Lapitan & Yvonne Zhou.</p>
-	<a href="https://github.com/zhou2609/MetaSemProjekt">Hier geht's zur Dokumentation.</a>
-	<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>    
+ 	<!-- Div-Box zum Anzeigen der Karte -->
+	<div id="map"></div>
+	
+	<a class="dokulink" href="https://github.com/zhou2609/MetaSemProjekt">Dokumentation</a>
+	<a class="dokulink" href="mockup.png">Mockup</a>
+	
+	<script src="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.js"></script>    
 	<script src="points_rand.js"></script>
 	<script src="school.js"></script>
 	<script src="leaflet.markercluster-src.js"></script>
@@ -42,24 +47,22 @@
 	});
 	// GeoJSON Objekte zur Karte hinzufügen mithilfe eines GeoJSON layers
 	var points_rand = L.geoJson(spoints, {
-
-		pointToLayer: function (feature, latlng) {
-				return L.marker(latlng, {icon: penIcon});
-			},
 		// Popup hinzufügen
 		onEachFeature: function (feature, layer)
 			{
 			layer.bindPopup(feature.properties.NAME);
-			}
+			},
 		// Custom Icon hinzufügen
-		
+		pointToLayer: function (feature, latlng) {
+				return L.marker(latlng, {icon: penIcon});
+			}
 
 		});
 	// Marker zur MarkerClusterGroup hinzufügen	
 	markers.addLayer(points_rand);
 	// Zur Karte hinzufügen
 	map.addLayer(markers);
-
+	map.fitBounds(markers.getBounds()); 
 	</script>
  </body>
 </html>
